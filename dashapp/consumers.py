@@ -1,11 +1,10 @@
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 
-class ChatConsumer(AsyncWebsocketConsumer):
+class AddConsumer(AsyncWebsocketConsumer):
     async def connect(self):
-        self.room_name = self.scope['url_route']['kwargs']['room_name']
-        self.room_group_name = 'chat_%s' % self.room_name
-
+        self.room_name = "dash"
+        self.room_group_name = "dash"
         # Join room group
         await self.channel_layer.group_add(
             self.room_group_name,
@@ -21,6 +20,13 @@ class ChatConsumer(AsyncWebsocketConsumer):
             self.channel_name
         )
 
+
+       # Normal
+
+        #let's start playing:
+
+    # Receive message from WebSocket 
+    # websocket here represents websocket connection on client "javascript"
     # Receive message from WebSocket
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
@@ -46,10 +52,10 @@ class ChatConsumer(AsyncWebsocketConsumer):
         }))
 
 
-class AddConsumer(AsyncWebsocketConsumer):
+class DashConsumer(AsyncWebsocketConsumer):
     async def connect(self):
-        self.room_name = self.scope['url_route']['kwargs']['room_name']
-        self.room_group_name = 'chat_%s' % self.room_name
+        self.room_name = "dash"
+        self.room_group_name = "dash"
 
         # Join room group
         await self.channel_layer.group_add(
@@ -66,25 +72,6 @@ class AddConsumer(AsyncWebsocketConsumer):
             self.channel_name
         )
 
-
-        # Normal
-
-        #let's start playing:
-
-    # Receive message from WebSocket 
-    # websocket here represents websocket connection on client "javascript"
-    # async def receive(self, text_data):
-    #         text_data_json = json.loads(text_data)
-    #         message = text_data_json['message']
-
-    #         # Send message to room group
-    #         await self.channel_layer.group_send(
-    #             self.room_group_name,
-    #             {
-    #                 'type': 'chat_message',
-    #                 'message': message
-    #             }
-    #         )
 
 
     #   # Receive message from room group

@@ -9,14 +9,10 @@ def index(request):
     return render(request, 'dashapp/index.html', context)
 
 
-def room(request, room_name):
-    return render(request, 'dashapp/room.html', {
-        'room_name': room_name
-    })
+def DashView(request):
+    return render(request, 'dashapp/dash.html')
 
 
 
-def AddView(request, room_name):
-    return render(request, 'dashapp/add.html', {
-        'room_name': room_name
-    })
+def AddView(request):
+    return render(request, 'dashapp/add.html')
