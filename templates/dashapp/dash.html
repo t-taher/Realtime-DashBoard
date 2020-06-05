@@ -6,8 +6,6 @@
 </head>
 <body>
     <textarea id="chat-log" cols="100" rows="20"></textarea><br>
-    {% comment %} <input id="chat-message-input" type="text" size="100"><br>
-    <input id="chat-message-submit" type="button" value="Send"> {% endcomment %}
     <script>
         const chatSocket = new WebSocket(
             'ws://'
@@ -17,7 +15,12 @@
 
         chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
+            let name = data.message['name'];
+            let cases = data.message.cases;
+            let dies = data.message.dies;
+            console.log(data)
             document.querySelector('#chat-log').value += (data.message + '\n');
+            document.querySelector('#chat-log').value = 'name : '+name + "cases: " + cases;
         };
 
         chatSocket.onclose = function(e) {

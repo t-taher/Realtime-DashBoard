@@ -25,10 +25,10 @@
       </thead>
 
 
-      <tbody id="lol">
+      <tbody id="main-tbody">
       {% for country in qs %}
          <tr>
-          <th scope="row">{{country.id}}</th>
+          <th scope="row">#</th>
           <td>{{country.name}}</td>
           <td>{{country.cases}}</td>
           <td>{{country.dies}}</td>
@@ -38,28 +38,35 @@
     </table>
 
     <script>
-        const roomName = JSON.parse(document.getElementById('room-name').textContent);
-
         const chatSocket = new WebSocket(
             'ws://'
             + window.location.host
-            + '/ws/chat/'
-            + roomName
-            + '/'
+            + '/ws/dash/'
+          
         );
 
         chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
-            document.querySelector('#chat-log').value += (data.message + '\n');
+            let name = data.message['name'];
+            let cases = data.message.cases;
+            let dies = data.message.dies;
+
+            var tbody = document.getElementById("main-tbody");
+
+            var row = tbody.insertRow();
+            var cell0 = row.insertCell(0);
+            var cell1 = row.insertCell(1);
+            var cell2 = row.insertCell(2);
+            var cell3 = row.insertCell(3);
+
+            // Add some text to the new cells:
+            cell0.innerHTML = "#"
+            cell1.innerHTML = name;
+            cell2.innerHTML = cases;
+            cell3.innerHTML = dies;
+            
         };
 
-        {% comment %} chatSocket.onmessage = function(e) {
-            var tag = document.createElement("p");
-              var text = document.createTextNode("Tutorix is the best e-learning platform");
-              tag.appendChild(text);
-              var element = document.getElementById("new");
-              element.appendChild(tag);
-        } {% endcomment %}
 
         chatSocket.onclose = function(e) {
             console.error('Chat socket closed unexpectedly');
