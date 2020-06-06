@@ -38,8 +38,7 @@ class AddConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
-        message = eval(message)
-
+        
         await save_message(message)
         
         # Send message to room group

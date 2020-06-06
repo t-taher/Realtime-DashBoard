@@ -5,9 +5,14 @@
     <title>Chat Room</title>
 </head>
 <body>
-    <textarea id="chat-log" cols="100" rows="20"></textarea><br>
-    <input id="chat-message-input" type="text" size="100"><br>
-    <input id="chat-message-submit" type="button" value="Send">
+    <textarea id="log" cols="100" rows="20"></textarea><br>
+    <h3>country name :</h3>
+    <input id="name-input" type="text" size="100"><br>
+    <h3>cases integer :</h3>
+    <input id="cases-input" type="text" size="100"><br>
+    <h3>dies integer :</h3>
+    <input id="dies-input" type="text" size="100"><br>
+    <input id="submit" type="button" value="Add">
     <script>
         const chatSocket = new WebSocket(
             'ws://'
@@ -17,27 +22,36 @@
 
         chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
-            document.querySelector('#chat-log').value += (data.message + '\n');
+            document.querySelector('#log').value += (data.message.name + '\n');
         };
 
         chatSocket.onclose = function(e) {
             console.error('Chat socket closed unexpectedly');
         };
 
-        document.querySelector('#chat-message-input').focus();
-        document.querySelector('#chat-message-input').onkeyup = function(e) {
+        document.querySelector('#dies-input').focus();
+        document.querySelector('#dies-input').onkeyup = function(e) {
             if (e.keyCode === 13) {  // enter, return
-                document.querySelector('#chat-message-submit').click();
+                document.querySelector('#submit').click();
             }
-        };
+        }; 
 
-        document.querySelector('#chat-message-submit').onclick = function(e) {
-            const messageInputDom = document.querySelector('#chat-message-input');
-            const message = messageInputDom.value;
+        document.querySelector('#submit').onclick = function(e) {
+            const name = document.querySelector('#name-input');
+            const cases = document.querySelector('#cases-input');
+            const dies = document.querySelector('#dies-input');
+
+            const message = {
+                'name':name.value,
+                'dies':dies.value,
+                'cases':cases.value,
+            };
             chatSocket.send(JSON.stringify({
                 'message': message
             }));
-            messageInputDom.value = '';
+            name.value = '';
+            cases.value = '';
+            dies.value = '';
         }; 
     </script>
 </body>
